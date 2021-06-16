@@ -1,9 +1,15 @@
 import { SinkRepair } from "./SinkRepair.js"
 import { fetchRequests } from "./dataAccess.js"
-
+import { deleteRequest } from "./dataAccess.js"
 
 
 const mainContainer = document.querySelector("#container")
+mainContainer.addEventListener("click", click => {
+    if (click.target.id.startsWith("request--")) {
+        const [,requestId] = click.target.id.split("--")
+        deleteRequest(parseInt(requestId))
+    }
+})
 
 const render = () => {
     fetchRequests().then(
@@ -14,4 +20,11 @@ const render = () => {
 }
 
 render()
+
+mainContainer.addEventListener(
+    "stateChanged",
+    customEvent => {
+        render()
+    }
+)
 
